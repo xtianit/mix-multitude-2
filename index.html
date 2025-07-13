@@ -1,0 +1,2354 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mix Multitudes Series</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="quiz.css" />
+
+        <style>
+            /* Professional Engaging Spinner */
+            .tab-spinner {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 150px;
+                width: 100%;
+                position: relative;
+            }
+
+            /* Hide the original Font Awesome icon */
+            .tab-spinner i {
+                display: none;
+            }
+
+            /* Main spinner ring */
+            .tab-spinner::before {
+                content: "";
+                position: absolute;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                border: 3px solid rgba(74, 109, 167, 0.1);
+                border-top: 3px solid #4a6da7;
+                border-right: 3px solid #4a6da7;
+                box-shadow: 0 0 15px rgba(74, 109, 167, 0.1);
+                animation: spinClockwise 1.2s
+                    cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            }
+
+            .highlight {
+                color: #4a6da7;
+                font-weight: bold;
+                text-decoration: underline;
+            }
+
+            /* Inner spinner ring */
+            .tab-spinner::after {
+                content: "";
+                position: absolute;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                border: 3px solid rgba(74, 109, 167, 0.05);
+                border-bottom: 3px solid #4a6da7;
+                border-left: 3px solid #4a6da7;
+                animation: spinCounterClockwise 1.8s
+                    cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            }
+
+            /* Create the pulse effect */
+            @keyframes spinClockwise {
+                0% {
+                    transform: rotate(0deg) scale(1);
+                }
+                50% {
+                    transform: rotate(180deg) scale(1.1);
+                    border-top-color: #5b7fbf;
+                    border-right-color: #5b7fbf;
+                    box-shadow: 0 0 20px rgba(74, 109, 167, 0.4);
+                }
+                100% {
+                    transform: rotate(360deg) scale(1);
+                }
+            }
+
+            @keyframes spinCounterClockwise {
+                0% {
+                    transform: rotate(0deg) scale(1);
+                }
+                50% {
+                    transform: rotate(-180deg) scale(1.15);
+                    border-bottom-color: #5b7fbf;
+                    border-left-color: #5b7fbf;
+                }
+                100% {
+                    transform: rotate(-360deg) scale(1);
+                }
+            }
+
+            /* Add a subtle pulsating dot in the center */
+            .tab-spinner .center-dot {
+                position: absolute;
+                width: 12px;
+                height: 12px;
+                background-color: #4a6da7;
+                border-radius: 50%;
+                animation: pulseDot 1.5s ease-in-out infinite;
+            }
+
+            @keyframes pulseDot {
+                0%,
+                100% {
+                    transform: scale(0.7);
+                    opacity: 0.5;
+                }
+                50% {
+                    transform: scale(1);
+                    opacity: 0.8;
+                    box-shadow: 0 0 10px rgba(74, 109, 167, 0.6);
+                }
+            }
+
+            /* Keep your existing fade transition */
+            .tab-content {
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+            }
+
+            .tab-content.active {
+                opacity: 1;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Loading Screen -->
+        <div class="loader-container">
+            <div class="loader-logo">
+                <img src="./logo.png" alt="Sunday School Logo" />
+                <div class="pulse"></div>
+            </div>
+            <div class="ministry-name">Life Gate Ministries Worldwide</div>
+            <div class="loader-text">Loading Sunday School Lesson</div>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+
+        <div class="inner-logo-container">
+            <img src="./logo.png" alt="Sunday School Logo" class="logo" />
+        </div>
+
+        <button
+            class="theme-toggle"
+            onclick="toggleTheme()"
+            aria-label="Toggle theme"
+            style="z-index: 99999"
+        >
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="container">
+            <h1><b>SUNDAY SCHOOL LESSON</b></h1>
+            <h2>
+                <b>DATE: <span>JULY 12, 2025</span></b>
+            </h2>
+            <h2>
+                <b> INFLUENCE OF THE MIX MULTITUDES PART 2 </b>
+            </h2>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="lessonProgress"></div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab('intro')">
+                    Introduction
+                </button>
+                <button class="tab-btn" onclick="openTab('lesson')">
+                    Lesson
+                </button>
+
+                <button class="tab-btn" onclick="openTab('conclusion')">
+                    Conclusion
+                </button>
+                <button class="tab-btn" onclick="openTab('application')">
+                    Application
+                </button>
+
+                <button class="tab-btn" onclick="openTab('quiz')">Quiz</button>
+                <button class="tab-btn" onclick="openTab('prayer')">
+                    Prayer Points
+                </button>
+                <button class="tab-btn" onclick="openTab('assignment')">
+                    Assignment
+                </button>
+            </div>
+
+            <div id="tab-spinner" class="tab-spinner" style="display: none">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+
+            <!-- Tab Contents -->
+            <div id="intro" class="tab-content active">
+                <div class="memory-verse">
+                    <h1><b>🧠📝 Memory Verse</b></h1>
+                    <blockquote>
+                        <b>
+                            And this is the condemnation, that light is come
+                            into the world, and men loved darkness rather than
+                            light, because their deeds were evil - John 3:19
+                            ⚖️📏🔁🪞⚠️</b
+                        >
+                        <br />
+                        <button
+                            onclick="showBibleVersions('John 3:19')"
+                            class="verse-btn btn-sm"
+                        >
+                            📖 Read Other Versions
+                        </button>
+                    </blockquote>
+                </div>
+                <h2><b>Text: Numbers 11:4-6, 10-15, 33 📚</b></h2>
+                <blockquote>
+                    <button
+                        onclick="showBibleVersions('Numbers 11:4-6')"
+                        class="verse-btn btn-sm"
+                    >
+                        📖 Read Numbers 11:4-6
+                    </button>
+                    <button
+                        onclick="showBibleVersions('Numbers 11:10-15')"
+                        class="verse-btn btn-sm"
+                    >
+                        📖 Read Numbers 11:10-15
+                    </button>
+                    <button
+                        onclick="showBibleVersions('Numbers 11:33')"
+                        class="verse-btn btn-sm"
+                    >
+                        📖 Read Numbers 11:33
+                    </button>
+                </blockquote>
+
+                <h2><b>INTRODUCTION</b> 🧠✨📖</h2>
+                <p>
+                    We live in a world where light and darkness contend with one
+                    another and the advertisment of darkness seems to be more
+                    appealing to mankind. 🐍🌳 Don't take side with people
+                    because their ideas seem good and your feelings supports
+                    their cravings but humble yourself and support the righteous
+                    course of the Lord according to the Holy scriptures. The
+                    Lord wants you to stand with Him and not against Him - 1
+                    Cor. 10:12.
+                </p>
+
+                <button
+                    onclick="showBibleVersions('1 Corinthians 10:12')"
+                    class="verse-btn btn-sm"
+                >
+                    📖 1 Corinthians 10:12
+                </button>
+
+                <div class="aims-objectives">
+                    <h3><b>AIMS AND OBJECTIVES</b> 🎯📖💡</h3>
+                    <p>
+                        <strong>AIMS:</strong> To reveal Satan's scheme and
+                        motive against God's children. ⚠️🕊️📖💰🤔
+                    </p>
+
+                    <p>
+                        <strong>OBJECTIVES:</strong> That God's children may
+                        escape the wrath and damnation of
+                        <span onclick="showBibleVersions('2 Corinthians 2:11')"
+                            >God</span
+                        >. 🕊️⚖️📖💰🤔
+                    </p>
+                </div>
+            </div>
+
+            <div id="lesson" class="tab-content">
+                <h2><b>Text Review/Lesson 📚✨</b></h2>
+                <div class="main-text">
+                    <h3><b>Text: Numbers 11:4-6, 10-15, 33 📖</b></h3>
+                    <blockquote>
+                        <button
+                            onclick="showBibleVersions('Numbers 11:4-6')"
+                            class="verse-btn btn-sm"
+                        >
+                            📖 Read Numbers 11:4-6
+                        </button>
+                        <button
+                            onclick="showBibleVersions('Numbers 11:10-15')"
+                            class="verse-btn btn-sm"
+                        >
+                            📖 Read Numbers 11:10-15
+                        </button>
+                        <button
+                            onclick="showBibleVersions('Numbers 11:33')"
+                            class="verse-btn btn-sm"
+                        >
+                            📖 Read Numbers 11:33
+                        </button>
+                    </blockquote>
+                </div>
+
+                <div class="lesson-section">
+                    <h3><b>Lesson 🧠💡</b></h3>
+                    <p>
+                        <span>🌱🌷🌼🌿🌻🌺🍀🌳🌴🪴🏡🐝🐞</span> <br />
+                        God's provision of Manna was satisfactory to the Jews
+                        until the Mix Multitude began to point out to them that
+                        everything was wrong with it. This similar action
+                        occurred in Eden as the first parents hearkened to
+                        strange Satan who found everything that God gave them to
+                        be wrong. Their agitation brought a new deal but also
+                        calamity, where many dies according to verse 34. Let us
+                        consider more on this lesson.
+                        <br />
+                        <button
+                            onclick="showBibleVersions('Numbers 11:34')"
+                            class="verse-btn btn-sm"
+                        >
+                            📖 Read Numbers 11:34
+                        </button>
+                    </p>
+                    <ol>
+                        <li>
+                            <h2>
+                                <u><b>THE CARELESS CATCHES THE FLU ⛪👥</b></u>
+                            </h2>
+                            <p>
+                                The scheme and the actions of the mix multitude
+                                is highly contagious that only the careful
+                                believers can escape it. They will open your
+                                eyes to what they see other than what God
+                                requires you to see. They will entice and
+                                motivate you to join them or begin your own
+                                journey of rebellion towards God as in our text
+                                - Numbers 11:4, 1 Cor. 10:12, Isa. 32:10 🕵️‍♂️🎭👹
+                            </p>
+                            <button
+                                onclick="showBibleVersions('Numbers 11:4')"
+                                class="verse-btn btn-sm"
+                            >
+                                Numbers 11:4
+                            </button>
+                            <button
+                                onclick="showBibleVersions('1 Corinthians 10:12')"
+                                class="verse-btn btn-sm"
+                            >
+                                1 Corinthians 10:12
+                            </button>
+                            <button
+                                onclick="showBibleVersions('Isaiah 32:10')"
+                                class="verse-btn btn-sm"
+                            >
+                                Isaiah 32:10
+                            </button>
+                        </li>
+
+                        <li>
+                            <h2>
+                                <b><u>THE INSATIABLE WANTS OF MAN 💔🆚💖</u></b>
+                            </h2>
+                            <p>
+                                It is true that man is never satisfied with what
+                                he has or receives. This same congregation had
+                                God's protection from all the plaques in Egypt.
+                                All the silver and gold including the best
+                                clothings from all the Egyptian were given to
+                                them by God. They received other acts of God
+                                including miraculous supply of water which no
+                                other nation has ever enjoyed. The manna was one
+                                of the numerous provisions of God to them yet
+                                they joined unbelievers to rebel against a
+                                loving God who is busy blessing them through His
+                                servant. If this is your present position then
+                                repent quickly before calamnity will befall you.
+                                Hebrews 13:5
+                            </p>
+                            <button
+                                onclick="showBibleVersions('Hebrews 13:5')"
+                                class="verse-btn btn-sm"
+                            >
+                                Hebrews 13:5
+                            </button>
+                        </li>
+                        <li>
+                            <h2>
+                                <b
+                                    ><u
+                                        >LOST OF APETITE FOR GOD'S DEALING:
+                                        🌀🔥</u
+                                    ></b
+                                >
+                            </h2>
+                            <p>
+                                In verse 6, they claim to to have lost appetite
+                                for God's provision and desired what the mix
+                                multitude showed them. Your union with the mix
+                                multitude will always create loss of joy in the
+                                things of God Because their influence is based
+                                on their interest - 2 Corinthians 6:14
+                            </p>
+
+                            <button
+                                onclick="showBibleVersions('2 Corinthians 6:14')"
+                                class="verse-btn btn-sm"
+                            >
+                                2 Corinthians 6:14
+                            </button>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div id="conclusion" class="tab-content">
+                <h2>Conclusion 📜</h2>
+                <p></p>
+                Don’t allow such evil company to sweep you away from the
+                presence and blessings of God to destruction. Numbers 33:55-56.
+                <br />
+                <button
+                    onclick="showBibleVersions('Numbers 33:55-56')"
+                    class="verse-btn btn-sm"
+                >
+                    Numbers 33:55-56
+                </button>
+            </div>
+
+            <div id="application" class="tab-content">
+                <h2>Personal Application 🧠🙏</h2>
+                <div class="reflection-section">
+                    <div class="interactive-cards">
+                        <!-- Understanding Check -->
+                        <div class="reflection-card">
+                            <h3>
+                                Understanding the Influence of the Mixed
+                                Multitude 👥⚠️
+                            </h3>
+                            <div class="love-meter">
+                                <p>
+                                    On a scale of 1 to 10, how well do you now
+                                    understand the dangers of allowing the mixed
+                                    multitude (unbelievers or those with worldly
+                                    motives) to influence your walk with God?
+                                </p>
+                                <div class="rating-container">
+                                    <input
+                                        type="range"
+                                        min="1"
+                                        max="10"
+                                        value="5"
+                                        class="love-slider"
+                                        id="influenceRating"
+                                    />
+                                    <span class="rating-value">5/10</span>
+                                </div>
+                                <div class="rating-feedback"></div>
+                            </div>
+                        </div>
+
+                        <!-- Action Plan -->
+                        <div class="reflection-card">
+                            <h3>
+                                Action Plan to Resist Negative Influence 🛡️🚫
+                            </h3>
+                            <div class="action-items">
+                                <div class="action-item">
+                                    <input type="checkbox" id="action1" />
+                                    <label for="action1">
+                                        Be watchful of friendships and
+                                        associations in church and elsewhere 👀
+                                    </label>
+                                </div>
+                                <div class="action-item">
+                                    <input type="checkbox" id="action2" />
+                                    <label for="action2">
+                                        Test every advice or teaching by the
+                                        Word of God 📖
+                                    </label>
+                                </div>
+                                <div class="action-item">
+                                    <input type="checkbox" id="action3" />
+                                    <label for="action3">
+                                        Avoid joining in complaints or rebellion
+                                        against godly leadership 🙅‍♂️
+                                    </label>
+                                </div>
+                                <div class="action-item">
+                                    <input type="checkbox" id="action4" />
+                                    <label for="action4">
+                                        Pray for discernment and courage to
+                                        stand for truth 🙏
+                                    </label>
+                                </div>
+                                <button class="add-action-btn">
+                                    Add Personal Action
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reflection Journal -->
+                    <div class="reflection-journal">
+                        <h3>Reflection Journal ✍️📖</h3>
+                        <div class="journal-prompts">
+                            <div class="prompt active">
+                                <p>
+                                    What stood out to you most about the
+                                    influence of the mixed multitude in Israel’s
+                                    journey, and why?
+                                </p>
+                                <textarea
+                                    class="reflection-input"
+                                    placeholder="Write your thoughts here..."
+                                ></textarea>
+                            </div>
+                            <div class="prompt">
+                                <p>
+                                    Can you recall a time when negative
+                                    influence from others affected your
+                                    spiritual decisions? How did you respond?
+                                </p>
+                                <textarea
+                                    class="reflection-input"
+                                    placeholder="Reflect on your experience and lessons learned..."
+                                ></textarea>
+                            </div>
+                            <div class="prompt">
+                                <p>
+                                    What practical step will you take this week
+                                    to guard your heart and help others avoid
+                                    the trap of the mixed multitude?
+                                </p>
+                                <textarea
+                                    class="reflection-input"
+                                    placeholder="Be specific about your plan of obedience..."
+                                ></textarea>
+                            </div>
+                            <div class="prompt-nav">
+                                <button class="prev-prompt" disabled>
+                                    <i class="fas fa-arrow-left"></i>
+                                </button>
+                                <span class="prompt-counter">1/3</span>
+                                <button class="next-prompt">
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Commitment Section -->
+                    <div class="commitment-section">
+                        <h3>Personal Commitment 📜🖊️</h3>
+                        <div class="commitment-form">
+                            <p>Based on today’s lesson, I commit to:</p>
+                            <input
+                                type="text"
+                                class="commitment-input"
+                                placeholder="e.g., Refusing to follow the crowd when they go against God’s Word..."
+                            />
+                            <button class="save-commitment">
+                                Make Commitment
+                            </button>
+                        </div>
+                        <div class="saved-commitments">
+                            <h4>My Commitments to Godly Influence 📂💬</h4>
+                            <ul class="commitment-list"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="application-summary" style="margin-top: 2rem">
+                    <h3>Summary & Challenge</h3>
+                    <p>
+                        The influence of the mixed multitude is subtle but
+                        powerful. As you reflect on this lesson, remember that
+                        God calls His people to be separate and to guard their
+                        hearts from negative influences. Take practical steps
+                        this week to evaluate your associations, test every
+                        teaching by the Word, and encourage others to stand firm
+                        in faith. Let your life be a positive influence, drawing
+                        others closer to Christ.
+                    </p>
+                    <ul>
+                        <li>Pray daily for discernment and strength.</li>
+                        <li>
+                            Encourage a friend to join you in this commitment.
+                        </li>
+                        <li>
+                            Share what you’ve learned with your family or group.
+                        </li>
+                    </ul>
+                    <p>
+                        <b>Memory Verse:</b> “Wherefore let him that thinketh he
+                        standeth take heed lest he fall.” – 1 Corinthians 10:12
+                    </p>
+                </div>
+            </div>
+
+            <link rel="stylesheet" href="theme.css" />
+            <div id="quiz" class="tab-content">
+                <div class="quiz-container">
+                    <h3>Speed Quiz Challenge 🎯</h3>
+                    <div class="speed-quiz-container">
+                        <div class="quiz-stats">
+                            <div class="timer">
+                                ⏱️ Time: <span id="timer">50</span>s
+                            </div>
+                            <div class="score">
+                                Score: <span id="speed-score">0</span>
+                            </div>
+                        </div>
+                        <div id="question-container" class="question-display">
+                            <h4 style="color: green">Get Ready!</h4>
+                            <p style="color: green">
+                                Answer quickly for bonus points!
+                            </p>
+                        </div>
+
+                        <div class="answer-buttons">
+                            <button class="speed-btn" onclick="checkAnswer(0)">
+                                A
+                            </button>
+                            <button class="speed-btn" onclick="checkAnswer(1)">
+                                B
+                            </button>
+                            <button class="speed-btn" onclick="checkAnswer(2)">
+                                C
+                            </button>
+                            <button class="speed-btn" onclick="checkAnswer(3)">
+                                D
+                            </button>
+                        </div>
+
+                        <div class="controls">
+                            <button
+                                onclick="startSpeedQuiz()"
+                                class="start-btn"
+                            >
+                                Start Quiz
+                            </button>
+                            <button
+                                onclick="resetSpeedQuiz()"
+                                class="reset-btn"
+                            >
+                                Reset
+                            </button>
+                        </div>
+
+                        <div id="feedback" class="feedback"></div>
+                    </div>
+                </div>
+
+                <style>
+                    .quiz-container {
+                        padding: 15px;
+                        max-width: 100%;
+                    }
+
+                    .quiz-stats {
+                        display: flex;
+                        justify-content: space-between;
+                        flex-wrap: wrap;
+                        gap: 10px;
+                        margin-bottom: 15px;
+                        font-size: 16px;
+                    }
+
+                    .question-display {
+                        margin: 15px 0;
+                        padding: 10px;
+                        border-radius: 8px;
+                        background: #f5f5f5;
+                        word-wrap: break-word;
+                    }
+
+                    .answer-buttons {
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 10px;
+                        margin: 15px 0;
+                    }
+
+                    .speed-btn {
+                        padding: 12px;
+                        font-size: 16px;
+                        border-radius: 8px;
+                        border: 2px solid #4a6da7;
+                        /* background: white; */
+                        min-height: 44px;
+                        touch-action: manipulation;
+                    }
+
+                    .controls {
+                        display: flex;
+                        gap: 10px;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                    }
+
+                    .start-btn,
+                    .reset-btn {
+                        padding: 12px 24px;
+                        font-size: 16px;
+                        border-radius: 8px;
+                        min-width: 120px;
+                        touch-action: manipulation;
+                    }
+
+                    .badge {
+                        padding: 8px 16px;
+                        margin: 10px 0;
+                        width: 100%;
+                        text-align: center;
+                        font-size: 14px;
+                    }
+
+                    .performance-chart-container {
+                        width: 100%;
+                        max-width: 100%;
+                        overflow-x: auto;
+                        margin-top: 15px;
+                    }
+
+                    @media (max-width: 480px) {
+                        .quiz-stats {
+                            font-size: 14px;
+                        }
+
+                        .speed-btn {
+                            padding: 10px;
+                            font-size: 14px;
+                        }
+
+                        .start-btn,
+                        .reset-btn {
+                            padding: 10px 20px;
+                            font-size: 14px;
+                            min-width: 100px;
+                        }
+                    }
+                </style>
+
+                <!-- Rest of your quiz JavaScript code remains the same -->
+                <script>
+                    // ... (keep all existing code until endQuiz function) ...
+                    const speedQuestions = [
+                        {
+                            q: "Who were the 'mixed multitude' mentioned in Numbers 11?",
+                            a: [
+                                "Egyptian soldiers",
+                                "Servants of the patriarchs of Egyptian origin",
+                                "Canaanite kings",
+                                "Israelite priests",
+                            ],
+                            correct: 1,
+                            match: 1, // B
+                        },
+                        {
+                            q: "What did the mixed multitude do among the Israelites?",
+                            a: [
+                                "Encouraged worship and unity",
+                                "Turned Israelites against Moses and God",
+                                "Built the tabernacle",
+                                "Led them into Canaan",
+                            ],
+                            correct: 1,
+                            match: 1, // B
+                        },
+                        {
+                            q: "According to the lesson, what is the main motive of the enemy among God's people?",
+                            a: [
+                                "To help them prosper",
+                                "To dilute and pollute God's children",
+                                "To teach them music",
+                                "To build altars",
+                            ],
+                            correct: 1,
+                            match: 1, // B
+                        },
+                        {
+                            q: "What does the 'mixed multitude' in the church represent?",
+                            a: [
+                                "Faithful believers",
+                                "Unsaved people who claim to be Christians",
+                                "Angels",
+                                "Prophets",
+                            ],
+                            correct: 1,
+                            match: 1, // B
+                        },
+                        {
+                            q: "What is a key difference between the mixed multitude and true Christians?",
+                            a: [
+                                "Their clothing style",
+                                "Their masterhood and interests",
+                                "Their language",
+                                "Their nationality",
+                            ],
+                            correct: 1,
+                            match: 1, // B
+                        },
+                        {
+                            q: "What happens when the mixed multitude creeps into God's congregation?",
+                            a: [
+                                "There is more unity",
+                                "Chaos erupts",
+                                "Everyone becomes rich",
+                                "They leave immediately",
+                            ],
+                            correct: 1,
+                            match: 1, // B
+                        },
+                        {
+                            q: "What should you do if someone in the congregation always points out faults and acts superior?",
+                            a: [
+                                "Follow their example",
+                                "Flee from such people",
+                                "Make them a leader",
+                                "Ignore them",
+                            ],
+                            correct: 1,
+                            match: 1, // B
+                        },
+                        {
+                            q: "What is the enemy’s singular motive among God’s people?",
+                            a: [
+                                "To encourage worship",
+                                "To draw them away from God",
+                                "To teach them new songs",
+                                "To help them build houses",
+                            ],
+                            correct: 1,
+                            match: 1, // B
+                        },
+                        {
+                            q: "What does Romans 8:5-8 teach about the mixed multitude?",
+                            a: [
+                                "They love to pray",
+                                "Their interests are worldly, not heavenly",
+                                "They are always joyful",
+                                "They are prophets",
+                            ],
+                            correct: 1,
+                            match: 1, // B
+                            match: 1, // B
+                        },
+                        {
+                            q: "What is the lesson’s main advice regarding the mixed multitude?",
+                            a: [
+                                "Welcome them always",
+                                "Flee from their influence",
+                                "Make them leaders",
+                                "Ignore their presence",
+                            ],
+                            correct: 1,
+                            match: 1, // B
+                        },
+                    ];
+
+                    let currentQuestion = 0;
+                    let timeLeft = 50;
+                    let timer;
+                    let score = 0;
+                    let isQuizActive = false;
+                    let questionResults = [];
+
+                    // ... other functions stay the same until endQuiz() ...
+                    function getPerformanceBadge(score) {
+                        // Changed to use score instead of percentage
+                        if (score >= 150) {
+                            return `<div class="badge gold">
+                                    <i class="fas fa-crown"></i>
+                                    <span>Grand Master of Tithing</span>
+                                </div>`;
+                        } else if (score >= 100) {
+                            return `<div class="badge silver">
+                                    <i class="fas fa-star"></i>
+                                    <span>Tithing Expert</span>
+                                </div>`;
+                        } else if (score >= 50) {
+                            return `<div class="badge bronze">
+                                    <i class="fas fa-award"></i>
+                                    <span>Tithing Scholar</span>
+                                </div>`;
+                        } else if (score >= 30) {
+                            return `<div class="badge beginner">
+                                    <i class="fas fa-seedling"></i>
+                                    <span>Tithing Student</span>
+                                </div>`;
+                        }
+                        return `<div class="badge beginner">
+                                <i class="fas fa-child"></i>
+                                <span>Tithing Beginner</span>
+                            </div>`;
+                    }
+
+                    function startSpeedQuiz() {
+                        if (isQuizActive) return;
+                        isQuizActive = true;
+                        score = 0;
+                        timeLeft = 100;
+                        currentQuestion = 0;
+                        questionResults = [];
+                        document.getElementById("speed-score").textContent =
+                            score;
+                        showQuestion();
+                        startTimer();
+                    }
+
+                    function showQuestion() {
+                        if (currentQuestion >= speedQuestions.length) {
+                            endQuiz();
+                            return;
+                        }
+                        const q = speedQuestions[currentQuestion];
+                        document.getElementById(
+                            "question-container"
+                        ).innerHTML = `
+                                <h4>Question ${currentQuestion + 1} of ${
+                            speedQuestions.length
+                        }:</h4>
+                                <p>${q.q}</p>
+                            `;
+                        document
+                            .querySelectorAll(".speed-btn")
+                            .forEach((btn, i) => {
+                                btn.textContent = q.a[i];
+                            });
+                    }
+
+                    function checkAnswer(choice) {
+                        if (!isQuizActive) return;
+                        const correct =
+                            speedQuestions[currentQuestion].correct === choice;
+                        const timebonus = Math.floor(timeLeft / 10);
+                        const pointsEarned = correct ? 10 + timebonus : 0;
+
+                        questionResults.push({
+                            question: currentQuestion + 1,
+                            correct: correct,
+                            points: pointsEarned,
+                            timeBonus: timebonus,
+                            match: speedQuestions[currentQuestion].match,
+                        });
+
+                        if (correct) {
+                            score += pointsEarned;
+                        }
+
+                        const feedback = document.getElementById("feedback");
+                        feedback.textContent = correct
+                            ? `Correct! +${pointsEarned} points`
+                            : "Wrong! Try the next question";
+                        feedback.className = `feedback ${
+                            correct ? "correct" : "wrong"
+                        }`;
+
+                        document.getElementById("speed-score").textContent =
+                            score;
+                        currentQuestion++;
+                        setTimeout(() => {
+                            feedback.textContent = "";
+                            showQuestion();
+                        }, 1000);
+                    }
+
+                    function startTimer() {
+                        timer = setInterval(() => {
+                            timeLeft--;
+                            document.getElementById("timer").textContent =
+                                timeLeft;
+                            if (timeLeft <= 0) endQuiz();
+                        }, 1000);
+                    }
+
+                    function createPerformanceChart() {
+                        const ctx = document.createElement("canvas");
+                        ctx.id = "performanceChart";
+                        ctx.style.marginTop = "20px";
+                        // Set minimum height for mobile
+                        ctx.style.minHeight = "300px"; // Added minimum height
+
+                        const labels = questionResults.map(
+                            (r) => `Q${r.question}`
+                        );
+                        const pointsData = questionResults.map((r) => r.points);
+                        const backgroundColors = questionResults.map(
+                            (r) =>
+                                r.correct
+                                    ? "rgba(75, 192, 192, 0.6)"
+                                    : "rgba(255, 0, 0, 0.6)" // Changed to pure red
+                        );
+                        const borderColors = questionResults.map(
+                            (r) =>
+                                r.correct
+                                    ? "rgba(75, 192, 192, 1)"
+                                    : "rgba(255, 0, 0, 1)" // Changed to pure red
+                        );
+
+                        new Chart(ctx, {
+                            type: "bar",
+                            data: {
+                                labels: labels,
+                                datasets: [
+                                    {
+                                        label: "Points per Question",
+                                        data: pointsData,
+                                        backgroundColor: backgroundColors,
+                                        borderColor: borderColors,
+                                        borderWidth: 1,
+                                    },
+                                ],
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                aspectRatio: 1,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        title: {
+                                            display: true,
+                                            text: "Points",
+                                        },
+                                    },
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: "Questions",
+                                        },
+                                    },
+                                },
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: "Performance Breakdown",
+                                    },
+                                    legend: {
+                                        display: false,
+                                    },
+                                },
+                            },
+                        });
+                        return ctx;
+                    }
+
+                    function endQuiz() {
+                        isQuizActive = false;
+                        clearInterval(timer);
+                        const questionsAttempted = currentQuestion;
+                        const correctAnswers = questionResults.filter(
+                            (r) => r.correct
+                        ).length;
+                        const scorePercentage = Math.round(
+                            (correctAnswers / speedQuestions.length) * 100
+                        );
+
+                        const container =
+                            document.getElementById("question-container");
+                        container.innerHTML = `
+                            <h4>Quiz Complete!</h4>
+                            ${getPerformanceBadge(score)}
+                            <p>Questions Attempted: ${questionsAttempted} of ${
+                            speedQuestions.length
+                        }</p>
+                            <p>Final Score: ${score} points</p>
+                            <p>Performance: ${scorePercentage}%</p>
+                            <p>Time Remaining: ${timeLeft}s</p>
+                            <p>${getScoreMessage(score)}</p>
+                            
+                            <div class="share-buttons">
+                                <button onclick="shareToWhatsApp()" class="share-btn whatsapp">
+                                    <i class="fab fa-whatsapp"></i> Share to WhatsApp
+                                </button>
+                                <button onclick="shareToFacebook()" class="share-btn facebook">
+                                    <i class="fab fa-facebook"></i> Share to Facebook
+                                </button>
+                            </div>
+
+                            <div class="performance-chart-container"></div>
+                        `;
+
+                        container
+                            .querySelector(".performance-chart-container")
+                            .appendChild(createPerformanceChart());
+
+                        // Add styles for share buttons
+                        const style = document.createElement("style");
+                        style.textContent = `
+                            .share-buttons {
+                                display: flex;
+                                gap: 10px;
+                                margin: 15px 0;
+                                justify-content: center;
+                            }
+                            .share-btn {
+                                padding: 10px 20px;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                                color: white;
+                                font-size: 14px;
+                            }
+                            .whatsapp {
+                                background-color: #25D366;
+                            }
+                            .facebook {
+                                background-color: #1877F2;
+                            }
+                        `;
+                        document.head.appendChild(style);
+                    }
+
+                    function shareToWhatsApp() {
+                        const text = `🎯 Bible Quiz Result!\n
+                📊 My Score: ${score} points\n
+                ⭐ Performance: ${Math.round(
+                    (questionResults.filter((r) => r.correct).length /
+                        speedQuestions.length) *
+                        100
+                )}%\n
+                🎮 Try the quiz yourself at: ${window.location.href}`;
+
+                        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
+                            text
+                        )}`;
+                        window.open(whatsappUrl, "_blank");
+                    }
+
+                    function shareToFacebook() {
+                        const text = `I scored ${score} points in the Bible Quiz! Can you beat my score?`;
+                        const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                            window.location.href
+                        )}&quote=${encodeURIComponent(text)}`;
+                        window.open(fbUrl, "_blank", "width=600,height=400");
+                    }
+
+                    // ... (keep remaining functions the same) ...
+                    function getScoreMessage(score) {
+                        if (score >= 150) {
+                            return "Outstanding! You have excellent knowledge of tithing principles!";
+                        } else if (score >= 100) {
+                            return "Great work! You understand tithing concepts well!";
+                        } else if (score >= 50) {
+                            return "Good effort! Keep studying to improve your understanding.";
+                        } else if (score >= 30) {
+                            return "Keep learning! Review the lesson materials for better understanding.";
+                        }
+                        return "Don't give up! Review the lesson and try again.";
+                    }
+
+                    function resetSpeedQuiz() {
+                        isQuizActive = false;
+                        clearInterval(timer);
+                        score = 0;
+                        timeLeft = 100;
+                        currentQuestion = 0;
+                        questionResults = [];
+                        document.getElementById("speed-score").textContent =
+                            "0";
+                        document.getElementById("timer").textContent = "100";
+                        document.getElementById("feedback").textContent = "";
+                        document.getElementById(
+                            "question-container"
+                        ).innerHTML = `
+                                <h4 style="color:green">Get Ready!</h4>
+                                <p style="color:green">Answer quickly for bonus points!</p>
+                            `;
+                    }
+
+                    // Initialize quiz on page load
+                    document.addEventListener("DOMContentLoaded", () => {
+                        resetSpeedQuiz();
+                    });
+                </script>
+            </div>
+
+            <link rel="stylesheet" href="prayer.css" />
+
+            <div id="prayer" class="tab-content">
+                <h2>
+                    Prayer Points – Deliverance from the Influence of the Mixed
+                    Multitude
+                </h2>
+                <div class="prayer-section">
+                    <div class="prayer-points">
+                        <div class="prayer-item">
+                            <div class="prayer-text">
+                                Lord, thank You for opening my eyes to the
+                                dangers of the mixed multitude among Your
+                                people. Give me discernment to recognize every
+                                ungodly influence around me.
+                            </div>
+                        </div>
+                        <div class="prayer-item">
+                            <div class="prayer-text">
+                                Father, have mercy on me wherever I have allowed
+                                the mixed multitude to sway my heart or actions
+                                away from Your will. Cleanse me and restore my
+                                focus on You.
+                            </div>
+                        </div>
+                        <div class="prayer-item">
+                            <div class="prayer-text">
+                                By the blood of Jesus, I break every tie and
+                                association that draws me away from God’s truth.
+                                Separate me from every source of spiritual
+                                pollution and compromise.
+                            </div>
+                        </div>
+                        <div class="prayer-item">
+                            <div class="prayer-text">
+                                Lord, deliver me from the spirit of rebellion,
+                                murmuring, and worldliness that comes from the
+                                mixed multitude. Fill me with a heart that seeks
+                                only to please You.
+                            </div>
+                        </div>
+                        <div class="prayer-item">
+                            <div class="prayer-text">
+                                Holy Spirit, empower me to stand firm in faith,
+                                even when others around me choose the path of
+                                disobedience. Let my life be a testimony of
+                                steadfastness and purity.
+                            </div>
+                        </div>
+                        <div class="prayer-item">
+                            <div class="prayer-text">
+                                Father, protect Your church from every agent of
+                                confusion, division, and compromise. Expose and
+                                uproot every influence that is not of You.
+                            </div>
+                        </div>
+                        <div class="prayer-item">
+                            <div class="prayer-text">
+                                Lord, help me to be a positive influence in my
+                                congregation, drawing others closer to Christ
+                                and not away from Him.
+                            </div>
+                        </div>
+                        <div class="prayer-item">
+                            <div class="prayer-text">
+                                Almighty God, grant me wisdom to choose my
+                                friends and associations wisely, and courage to
+                                flee from every appearance of evil.
+                            </div>
+                        </div>
+                        <div class="prayer-item">
+                            <div class="prayer-text">
+                                Thank You, Lord, for the assurance that as I
+                                separate myself from the mixed multitude, You
+                                will keep me safe and lead me to my promised
+                                inheritance. In Jesus’ name, Amen.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="assignment" class="tab-content">
+                <h2>
+                    <b
+                        >Weekly Assignment – Guarding Against the Mixed
+                        Multitude</b
+                    >
+                </h2>
+
+                <div class="assignment-container">
+                    <!-- Influence Tracker -->
+                    <div class="assignment-card">
+                        <h3>
+                            <b><u>Influence Reflection Tracker</u></b>
+                        </h3>
+                        <p>
+                            Track your vigilance against negative influences
+                            this month. Mark each week you actively resisted or
+                            avoided the influence of the "mixed multitude"
+                            (ungodly or worldly influences) in your life:
+                        </p>
+                        <div class="influence-tracker">
+                            <div class="track-item">
+                                <input
+                                    type="checkbox"
+                                    id="week1"
+                                    onchange="updateProgress()"
+                                />
+                                <label for="week1"
+                                    >Week 1 – I resisted negative
+                                    influence</label
+                                >
+                                <input
+                                    type="date"
+                                    class="date-input"
+                                    onchange="updateChart()"
+                                />
+                            </div>
+                            <div class="track-item">
+                                <input
+                                    type="checkbox"
+                                    id="week2"
+                                    onchange="updateProgress()"
+                                />
+                                <label for="week2"
+                                    >Week 2 – I avoided ungodly company</label
+                                >
+                                <input
+                                    type="date"
+                                    class="date-input"
+                                    onchange="updateChart()"
+                                />
+                            </div>
+                            <div class="track-item">
+                                <input
+                                    type="checkbox"
+                                    id="week3"
+                                    onchange="updateProgress()"
+                                />
+                                <label for="week3"
+                                    >Week 3 – I stood firm in my faith</label
+                                >
+                                <input
+                                    type="date"
+                                    class="date-input"
+                                    onchange="updateChart()"
+                                />
+                            </div>
+                            <div class="track-item">
+                                <input
+                                    type="checkbox"
+                                    id="week4"
+                                    onchange="updateProgress()"
+                                />
+                                <label for="week4"
+                                    >Week 4 – I encouraged others to follow
+                                    God</label
+                                >
+                                <input
+                                    type="date"
+                                    class="date-input"
+                                    onchange="updateChart()"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scripture Assignment -->
+                    <div class="assignment-card">
+                        <h3>Scripture Study – Lessons on Influence</h3>
+                        <p>
+                            Read and reflect on these verses about the dangers
+                            of negative influence and the importance of
+                            separation:
+                        </p>
+                        <ul class="study-list">
+                            <li>
+                                <input
+                                    type="checkbox"
+                                    id="verse1"
+                                    onchange="updateProgress()"
+                                />
+                                <label for="verse1"
+                                    >Numbers 11:4–6 – The mixed multitude's
+                                    effect</label
+                                >
+                                <button
+                                    onclick="showBibleVersions('Numbers 11:4-6')"
+                                    class="verse-btn"
+                                >
+                                    Read
+                                </button>
+                            </li>
+                            <li>
+                                <input
+                                    type="checkbox"
+                                    id="verse2"
+                                    onchange="updateProgress()"
+                                />
+                                <label for="verse2"
+                                    >2 Corinthians 6:14–18 – Separation from
+                                    unbelievers</label
+                                >
+                                <button
+                                    onclick="showBibleVersions('2 Corinthians 6:14-18')"
+                                    class="verse-btn"
+                                >
+                                    Read
+                                </button>
+                            </li>
+                            <li>
+                                <input
+                                    type="checkbox"
+                                    id="verse3"
+                                    onchange="updateProgress()"
+                                />
+                                <label for="verse3"
+                                    >Matthew 7:21 – True obedience</label
+                                >
+                                <button
+                                    onclick="showBibleVersions('Matthew 7:21')"
+                                    class="verse-btn"
+                                >
+                                    Read
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Reflection Area -->
+                    <div class="assignment-card">
+                        <h3>Reflection Journal – My Response</h3>
+                        <p>
+                            Reflect: Have I allowed the "mixed multitude" to
+                            influence my walk with God? What practical steps
+                            will I take to remain steadfast?
+                        </p>
+                        <textarea
+                            id="reflectionText"
+                            rows="5"
+                            placeholder="Write your personal reflection here..."
+                        ></textarea>
+                        <button onclick="saveReflection()">
+                            💾 Save Reflection
+                        </button>
+                    </div>
+
+                    <!-- Visual Progress Bar -->
+                    <div class="assignment-card">
+                        <h3>Progress Overview</h3>
+                        <div
+                            class="progress-bar"
+                            style="
+                                background: #eee;
+                                height: 20px;
+                                border-radius: 10px;
+                            "
+                        >
+                            <div
+                                id="assignmentProgress"
+                                style="
+                                    height: 100%;
+                                    width: 0%;
+                                    background: #4a6da7;
+                                    border-radius: 10px;
+                                "
+                            ></div>
+                        </div>
+                        <p id="progressText">0% Complete</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart.js -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                // Initialize Chart
+                const ctx = document
+                    .getElementById("tithingChart")
+                    .getContext("2d");
+                const tithingChart = new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+                        datasets: [
+                            {
+                                label: "Tithe Given",
+                                data: [0, 0, 0, 0],
+                                backgroundColor: "#4a6da7",
+                                borderColor: "#4a6da7",
+                                borderWidth: 1,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 1,
+                            },
+                        },
+                    },
+                });
+
+                // Update chart when checkboxes are clicked
+                function updateChart() {
+                    const weeks = ["week1", "week2", "week3", "week4"];
+                    const newData = weeks.map((id) =>
+                        document.getElementById(id).checked ? 1 : 0
+                    );
+                    tithingChart.data.datasets[0].data = newData;
+                    tithingChart.update();
+                }
+
+                // Update progress bar
+                function updateProgress() {
+                    const total = 7; // 4 weeks + 3 verses
+                    const checked = document.querySelectorAll(
+                        '#assignment input[type="checkbox"]:checked'
+                    ).length;
+                    const percent = (checked / total) * 100;
+
+                    document.getElementById("assignmentProgress").style.width =
+                        percent + "%";
+                    document.getElementById("progressText").textContent =
+                        Math.round(percent) + "% Complete";
+
+                    updateChart();
+                }
+
+                // Save reflection
+                function saveReflection() {
+                    const reflection =
+                        document.getElementById("reflectionText").value;
+                    localStorage.setItem("tithingReflection", reflection);
+                    alert("Reflection saved!");
+                }
+
+                // Load reflection on page load
+                document.addEventListener("DOMContentLoaded", () => {
+                    const saved = localStorage.getItem("tithingReflection");
+                    if (saved) {
+                        document.getElementById("reflectionText").value = saved;
+                    }
+                });
+            </script>
+
+            <!-- Add this modal for Bible versions -->
+            <div id="verse-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2 id="verse-reference"></h2>
+                    <div class="version-tab">
+                        <button
+                            class="version-btn"
+                            onclick="showVersion('KJV')"
+                        >
+                            KJV
+                        </button>
+                        <button
+                            class="version-btn"
+                            onclick="showVersion('NKJV')"
+                        >
+                            NKJV
+                        </button>
+                        <button
+                            class="version-btn"
+                            onclick="showVersion('NIV')"
+                        >
+                            NIV
+                        </button>
+                        <button
+                            class="version-btn"
+                            onclick="showVersion('ESV')"
+                        >
+                            ESV
+                        </button>
+                        <button
+                            class="version-btn"
+                            onclick="showVersion('AMP')"
+                        >
+                            AMP
+                        </button>
+                        <button
+                            class="version-btn"
+                            onclick="showVersion('NLT')"
+                        >
+                            NLT
+                        </button>
+                    </div>
+                    <div id="verse-text"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Replace your existing font controls with this -->
+        <div class="font-controls">
+            <button
+                onclick="adjustFontSize(-1)"
+                aria-label="Decrease font size"
+            >
+                <i class="fas fa-minus"></i>
+            </button>
+            <span class="font-size">16px</span>
+            <button onclick="adjustFontSize(1)" aria-label="Increase font size">
+                <i class="fas fa-plus"></i>
+            </button>
+            <select
+                class="font-family-select"
+                onchange="changeFont(this.value)"
+            >
+                <option value="'Segoe UI', sans-serif">Default</option>
+                <option value="Arial, sans-serif">Arial</option>
+                <option value="Georgia, serif">Georgia</option>
+                <option value="'Times New Roman', serif">
+                    Times New Roman
+                </option>
+                <option value="'Comic Sans MS', cursive">Comic Sans</option>
+            </select>
+        </div>
+
+        <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"
+        ></script>
+
+        <script>
+            $(function () {
+                let tab = $("tab");
+                tab.click(function () {
+                    alert;
+                });
+            });
+        </script>
+
+        <script>
+            // Loading Screen
+            window.addEventListener("load", function () {
+                setTimeout(() => {
+                    document.querySelector(".loader-container").style.display =
+                        "none";
+                }, 2000);
+            });
+
+            // // Tab Functionality
+            function openTab(tabName) {
+                const tabContents =
+                    document.getElementsByClassName("tab-content");
+                const tabButtons = document.getElementsByClassName("tab-btn");
+                const spinner = document.getElementById("tab-spinner");
+
+                for (let content of tabContents) {
+                    content.classList.remove("active");
+                    content.style.display = "none";
+                }
+
+                for (let button of tabButtons) {
+                    button.classList.remove("active");
+                }
+
+                document.getElementById(tabName).classList.add("active");
+                event.currentTarget.classList.add("active");
+
+                spinner.style.display = "flex";
+
+                setTimeout(() => {
+                    // Hide spinner
+                    spinner.style.display = "none";
+
+                    // Show selected tab content
+                    const selectedTab = document.getElementById(tabName);
+                    selectedTab.style.display = "block";
+
+                    // Trigger a reflow before adding the active class for animation
+                    void selectedTab.offsetWidth;
+
+                    // Add active class to fade in the content
+                    selectedTab.classList.add("active");
+
+                    // Update progress if needed
+                    updateProgress();
+                }, 800); // Adjust loading time as needed (800ms)
+            }
+
+            // Theme Toggle
+
+            function toggleTheme() {
+                document.body.classList.toggle("dark-mode");
+                const icon = document.querySelector(".theme-toggle i");
+                icon.classList.toggle("fa-moon");
+                icon.classList.toggle("fa-sun");
+            }
+
+            // Add these functions to your existing JavaScript
+
+            function showBibleVersions(reference) {
+                const modal = document.getElementById("verse-modal");
+                const verseRef = document.getElementById("verse-reference");
+                verseRef.textContent = reference;
+                modal.style.display = "block";
+                document.body.classList.add("modal-open");
+                showVersion(preferredVersion);
+            }
+
+            const bibleVerses = {
+                "Numbers 11:4-6": {
+                    KJV: "<b>4</b> And the mixt multitude that was among them fell a lusting: and the children of Israel also wept again, and said, Who shall give us flesh to eat? <b>5</b> We remember the fish, which we did eat in Egypt freely; the cucumbers, and the melons, and the leeks, and the onions, and the garlick: <b>6</b> But now our soul is dried away: there is nothing at all, beside this manna, before our eyes.",
+                    NKJV: "<b>4</b> Now the mixed multitude who were among them yielded to intense craving; so the children of Israel also wept again and said: 'Who will give us meat to eat? <b>5</b> We remember the fish which we ate freely in Egypt, the cucumbers, the melons, the leeks, the onions, and the garlic; <b>6</b> but now our whole being is dried up; there is nothing at all except this manna before our eyes!'",
+                    NIV: "<b>4</b> The rabble with them began to crave other food, and again the Israelites started wailing and said, 'If only we had meat to eat! <b>5</b> We remember the fish we ate in Egypt at no cost—also the cucumbers, melons, leeks, onions and garlic. <b>6</b> But now we have lost our appetite; we never see anything but this manna!'",
+                    ESV: "<b>4</b> Now the rabble that was among them had a strong craving. And the people of Israel also wept again and said, 'Oh that we had meat to eat! <b>5</b> We remember the fish we ate in Egypt that cost nothing, the cucumbers, the melons, the leeks, the onions, and the garlic. <b>6</b> But now our strength is dried up, and there is nothing at all but this manna to look at.'",
+                    AMP: "<b>4</b> The mixed multitude [of non-Israelites] who were among them had greedy desires; and the Israelites wept again and said, 'Who will give us meat to eat? <b>5</b> We remember the fish we ate freely and without cost in Egypt, the cucumbers, melons, leeks, onions, and garlic. <b>6</b> But now our appetite is gone; there is nothing at all [in the way of food] to be seen but this manna.'",
+                    NLT: "<b>4</b> Then the foreign rabble who were traveling with the Israelites began to crave the good things of Egypt. And the people of Israel also began to complain. 'Oh, for some meat!' they exclaimed. <b>5</b> 'We remember the fish we used to eat for free in Egypt. And we had all the cucumbers, melons, leeks, onions, and garlic we wanted. <b>6</b> But now our appetites are gone. All we ever see is this manna!'",
+                },
+                "1 Corinthians 10:12": {
+                    KJV: "<b>12</b> Wherefore let him that thinketh he standeth take heed lest he fall.",
+                    NKJV: "<b>12</b> Therefore let him who thinks he stands take heed lest he fall.",
+                    NIV: "<b>12</b> So, if you think you are standing firm, be careful that you don’t fall!",
+                    ESV: "<b>12</b> Therefore let anyone who thinks that he stands take heed lest he fall.",
+                    AMP: "<b>12</b> Therefore let the one who thinks he stands [firm, immune to temptation, being overconfident and self-righteous], take care that he does not fall [into sin and condemnation].",
+                    NLT: "<b>12</b> If you think you are standing strong, be careful not to fall.",
+                },
+                "John 3:19": {
+                    KJV: "<b>19</b> And this is the condemnation, that light is come into the world, and men loved darkness rather than light, because their deeds were evil.",
+                    NKJV: "<b>19</b> And this is the condemnation, that the light has come into the world, and men loved darkness rather than light, because their deeds were evil.",
+                    NIV: "<b>19</b> This is the verdict: Light has come into the world, but people loved darkness instead of light because their deeds were evil.",
+                    ESV: "<b>19</b> And this is the judgment: the light has come into the world, and people loved the darkness rather than the light because their works were evil.",
+                    AMP: "<b>19</b> This is the judgment [that is, the cause for indictment, the test by which people are judged, the basis for the sentence]: the Light has come into the world, and people loved the darkness rather than the Light, for their deeds were evil.",
+                    NLT: "<b>19</b> And the judgment is based on this fact: God’s light came into the world, but people loved the darkness more than the light, for their actions were evil.",
+                },
+                "Numbers 11:10-15": {
+                    KJV: "<b>10</b> Then Moses heard the people weep throughout their families, every man in the door of his tent: and the anger of the LORD was kindled greatly; Moses also was displeased. <b>11</b> And Moses said unto the LORD, Wherefore hast thou afflicted thy servant? and wherefore have I not found favour in thy sight, that thou layest the burden of all this people upon me? <b>12</b> Have I conceived all this people? have I begotten them, that thou shouldest say unto me, Carry them in thy bosom, as a nursing father beareth the sucking child, unto the land which thou swarest unto their fathers? <b>13</b> Whence should I have flesh to give unto all this people? for they weep unto me, saying, Give us flesh, that we may eat. <b>14</b> I am not able to bear all this people alone, because it is too heavy for me. <b>15</b> And if thou deal thus with me, kill me, I pray thee, out of hand, if I have found favour in thy sight; and let me not see my wretchedness.",
+
+                    NKJV: '<b>10</b> Then Moses heard the people weeping throughout their families, everyone at the door of his tent; and the anger of the LORD was greatly aroused; Moses also was displeased. <b>11</b> So Moses said to the LORD, \'Why have You afflicted Your servant? And why have I not found favor in Your sight, that You have laid the burden of all these people on me? <b>12</b> Did I conceive all these people? Did I beget them, that You should say to me, "Carry them in your bosom, as a guardian carries a nursing child," to the land which You swore to their fathers? <b>13</b> Where am I to get meat to give to all these people? For they weep all over me, saying, "Give us meat, that we may eat." <b>14</b> I am not able to bear all these people alone, because the burden is too heavy for me. <b>15</b> If You treat me like this, please kill me here and now—if I have found favor in Your sight—and do not let me see my wretchedness!\'',
+
+                    NIV: "<b>10</b> Moses heard the people of every family wailing at the entrance to their tents. The LORD became exceedingly angry, and Moses was troubled. <b>11</b> He asked the LORD, 'Why have you brought this trouble on your servant? What have I done to displease you that you put the burden of all these people on me? <b>12</b> Did I conceive all these people? Did I give them birth? Why do you tell me to carry them in my arms, as a nurse carries an infant, to the land you promised on oath to their ancestors? <b>13</b> Where can I get meat for all these people? They keep wailing to me, \"Give us meat to eat!\" <b>14</b> I cannot carry all these people by myself; the burden is too heavy for me. <b>15</b> If this is how you are going to treat me, please go ahead and kill me—if I have found favor in your eyes—and do not let me face my own ruin.'",
+
+                    ESV: '<b>10</b> Moses heard the people weeping throughout their clans, everyone at the door of his tent. And the anger of the LORD blazed hotly, and Moses was displeased. <b>11</b> Moses said to the LORD, \'Why have you dealt ill with your servant? And why have I not found favor in your sight, that you lay the burden of all this people on me? <b>12</b> Did I conceive all this people? Did I give them birth, that you should say to me, "Carry them in your bosom, as a nurse carries a nursing child," to the land that you swore to give their fathers? <b>13</b> Where am I to get meat to give to all this people? For they weep before me and say, "Give us meat, that we may eat." <b>14</b> I am not able to carry all this people alone; the burden is too heavy for me. <b>15</b> If you will treat me like this, kill me at once, if I find favor in your sight, that I may not see my wretchedness.\'',
+
+                    AMP: '<b>10</b> Now Moses heard the people weeping throughout their families, each man at the doorway of his tent; and the anger of the LORD blazed hotly, and Moses was displeased. <b>11</b> So Moses said to the LORD, \'Why have You been so hard on Your servant? And why have I not found favor in Your sight, that You have laid the burden of all these people on me? <b>12</b> Was it I who conceived all these people? Was it I who gave birth to them, that You should say to me, "Carry them in your arms as a nurse carries the nursing infant," to the land which You swore to their fathers? <b>13</b> Where am I to get meat to give to all these people? For they weep before me and say, "Give us meat so that we may eat." <b>14</b> I am not able to carry all these people alone, because the burden is too heavy for me. <b>15</b> So if this is the way You are going to deal with me, please kill me immediately—if I have found favor in Your sight—and do not let me see my wretchedness.\'',
+
+                    NLT: "<b>10</b> Moses heard all the families standing in the doorways of their tents whining, and the LORD became extremely angry. Moses was also very aggravated. <b>11</b> And Moses said to the LORD, 'Why are you treating me, your servant, so harshly? Have mercy on me! What did I do to deserve the burden of all these people? <b>12</b> Did I give birth to them? Did I bring them into the world? Why did you tell me to carry them in my arms like a mother carries a nursing baby? How can I carry them to the land you swore to give their ancestors? <b>13</b> Where am I supposed to get meat for all these people? They keep whining to me, saying, \"Give us meat to eat!\" <b>14</b> I can’t carry all these people by myself! The load is far too heavy! <b>15</b> If this is how you intend to treat me, just go ahead and kill me. Do me a favor and spare me this misery!'",
+                },
+                "Numbers 11:33": {
+                    KJV: "<b>33</b> And while the flesh was yet between their teeth, ere it was chewed, the wrath of the LORD was kindled against the people, and the LORD smote the people with a very great plague.",
+                    NKJV: "<b>33</b> But while the meat was still between their teeth, before it was chewed, the wrath of the LORD was aroused against the people, and the LORD struck the people with a very great plague.",
+                    NIV: "<b>33</b> But while the meat was still between their teeth and before it could be consumed, the anger of the LORD burned against the people, and he struck them with a severe plague.",
+                    ESV: "<b>33</b> While the meat was yet between their teeth, before it was consumed, the anger of the LORD was kindled against the people, and the LORD struck down the people with a very great plague.",
+                    AMP: "<b>33</b> While the meat was still between their teeth, before it was chewed, the anger of the LORD blazed against the people, and the LORD struck the people with a very severe plague.",
+                    NLT: "<b>33</b> But while they were gorging themselves on the meat—while it was still in their mouths—the anger of the LORD blazed against the people, and he struck them with a severe plague.",
+                },
+                "Matthew 7:21": {
+                    KJV: "<b>21</b> Not every one that saith unto me, Lord, Lord, shall enter into the kingdom of heaven; but he that doeth the will of my Father which is in heaven.",
+                    NKJV: "<b>21</b> Not everyone who says to Me, ‘Lord, Lord,’ shall enter the kingdom of heaven, but he who does the will of My Father in heaven.",
+                    NIV: "<b>21</b> Not everyone who says to me, ‘Lord, Lord,’ will enter the kingdom of heaven, but only the one who does the will of my Father who is in heaven.",
+                    ESV: "<b>21</b> Not everyone who says to me, ‘Lord, Lord,’ will enter the kingdom of heaven, but the one who does the will of my Father who is in heaven.",
+                    AMP: "<b>21</b> Not everyone who says to Me, ‘Lord, Lord,’ will enter the kingdom of heaven, but only he who does the will of My Father who is in heaven.",
+                    NLT: "<b>21</b> Not everyone who calls out to me, ‘Lord! Lord!’ will enter the Kingdom of Heaven. Only those who actually do the will of my Father in heaven will enter.",
+                },
+                "Job 1:6": {
+                    KJV: "<b>6</b> Now there was a day when the sons of God came to present themselves before the LORD, and Satan came also among them.",
+                    NKJV: "<b>6</b> Now there was a day when the sons of God came to present themselves before the LORD, and Satan also came among them.",
+                    NIV: "<b>6</b> One day the angels came to present themselves before the LORD, and Satan also came with them.",
+                    ESV: "<b>6</b> Now there was a day when the sons of God came to present themselves before the LORD, and Satan also came among them.",
+                    AMP: "<b>6</b> Now there was a day when the sons of God (angels) came to present themselves before the LORD, and Satan (adversary, accuser) also came among them.",
+                    NLT: "<b>6</b> One day the members of the heavenly court came to present themselves before the LORD, and the Accuser, Satan, came with them.",
+                },
+
+                "Job 2:1": {
+                    KJV: "<b>1</b> Again there was a day when the sons of God came to present themselves before the LORD, and Satan came also among them to present himself before the LORD.",
+                    NKJV: "<b>1</b> Again there was a day when the sons of God came to present themselves before the LORD, and Satan came also among them to present himself before the LORD.",
+                    NIV: "<b>1</b> On another day the angels came to present themselves before the LORD, and Satan also came with them to present himself before him.",
+                    ESV: "<b>1</b> Again there was a day when the sons of God came to present themselves before the LORD, and Satan also came among them to present himself before the LORD.",
+                    AMP: "<b>1</b> Again there was a day when the sons of God (angels) came to present themselves before the LORD, and Satan (adversary, accuser) also came among them to present himself before the LORD.",
+                    NLT: "<b>1</b> One day the members of the heavenly court came again to present themselves before the LORD, and the Accuser, Satan, came with them.",
+                },
+
+                "Zechariah 3:1-2": {
+                    KJV: "<b>1</b> And he shewed me Joshua the high priest standing before the angel of the LORD, and Satan standing at his right hand to resist him. <b>2</b> And the LORD said unto Satan, The LORD rebuke thee, O Satan; even the LORD that hath chosen Jerusalem rebuke thee: is not this a brand plucked out of the fire?",
+
+                    NKJV: "<b>1</b> Then he showed me Joshua the high priest standing before the Angel of the LORD, and Satan standing at his right hand to oppose him. <b>2</b> And the LORD said to Satan, 'The LORD rebuke you, Satan! The LORD who has chosen Jerusalem rebuke you! Is this not a brand plucked from the fire?'",
+
+                    NIV: "<b>1</b> Then he showed me Joshua the high priest standing before the angel of the LORD, and Satan standing at his right side to accuse him. <b>2</b> The LORD said to Satan, 'The LORD rebuke you, Satan! The LORD, who has chosen Jerusalem, rebuke you! Is not this man a burning stick snatched from the fire?'",
+
+                    ESV: "<b>1</b> Then he showed me Joshua the high priest standing before the angel of the LORD, and Satan standing at his right hand to accuse him. <b>2</b> And the LORD said to Satan, 'The LORD rebuke you, O Satan! The LORD who has chosen Jerusalem rebuke you! Is not this a brand plucked from the fire?'",
+
+                    AMP: "<b>1</b> Then [the guiding angel] showed me Joshua the high priest standing before the Angel of the LORD, and Satan standing at Joshua’s right hand to be his adversary and to accuse him. <b>2</b> And the LORD said to Satan, 'The LORD rebuke you, Satan! Even the LORD, who [now and ever] has chosen Jerusalem, rebuke you! Is this not a log snatched and rescued from the fire?'",
+
+                    NLT: "<b>1</b> Then the angel showed me Jeshua the high priest standing before the angel of the LORD. The Accuser, Satan, was there at the angel’s right hand, making accusations against Jeshua. <b>2</b> And the LORD said to Satan, 'I, the LORD, reject your accusations, Satan. Yes, the LORD, who has chosen Jerusalem, rebukes you. This man is like a burning stick that has been snatched from the fire.'",
+                },
+                "Matthew 15:8": {
+                    KJV: "<b>8</b> This people draweth nigh unto me with their mouth, and honoureth me with their lips; but their heart is far from me.",
+                    NKJV: "<b>8</b> ‘These people draw near to Me with their mouth, And honor Me with their lips, But their heart is far from Me.",
+                    NIV: "<b>8</b> ‘These people honor me with their lips, but their hearts are far from me.",
+                    ESV: "<b>8</b> “‘This people honors me with their lips, but their heart is far from me;",
+                    AMP: "<b>8</b> ‘These people honor Me with their lips, But their heart is far away from Me.",
+                    NLT: "<b>8</b> ‘These people honor me with their lips, but their hearts are far from me.",
+                },
+                "2 Timothy 3:5": {
+                    KJV: "<b>5</b> Having a form of godliness, but denying the power thereof: from such turn away.",
+                    NKJV: "<b>5</b> having a form of godliness but denying its power. And from such people turn away!",
+                    NIV: "<b>5</b> having a form of godliness but denying its power. Have nothing to do with such people.",
+                    ESV: "<b>5</b> having the appearance of godliness, but denying its power. Avoid such people.",
+                    AMP: "<b>5</b> holding to a form of [outward] godliness (religion), although they have denied its power [for their conduct nullifies their claim of faith]. Avoid such people and keep far away from them.",
+                    NLT: "<b>5</b> They will act religious, but they will reject the power that could make them godly. Stay away from people like that!",
+                },
+                "Romans 8:5-8": {
+                    KJV: "<b>5</b> For they that are after the flesh do mind the things of the flesh; but they that are after the Spirit the things of the Spirit. <b>6</b> For to be carnally minded is death; but to be spiritually minded is life and peace. <b>7</b> Because the carnal mind is enmity against God: for it is not subject to the law of God, neither indeed can be. <b>8</b> So then they that are in the flesh cannot please God.",
+                    NKJV: "<b>5</b> For those who live according to the flesh set their minds on the things of the flesh, but those who live according to the Spirit, the things of the Spirit. <b>6</b> For to be carnally minded is death, but to be spiritually minded is life and peace. <b>7</b> Because the carnal mind is enmity against God; for it is not subject to the law of God, nor indeed can be. <b>8</b> So then, those who are in the flesh cannot please God.",
+                    NIV: "<b>5</b> Those who live according to the flesh have their minds set on what the flesh desires; but those who live in accordance with the Spirit have their minds set on what the Spirit desires. <b>6</b> The mind governed by the flesh is death, but the mind governed by the Spirit is life and peace. <b>7</b> The mind governed by the flesh is hostile to God; it does not submit to God's law, nor can it do so. <b>8</b> Those who are in the realm of the flesh cannot please God.",
+                    ESV: "<b>5</b> For those who live according to the flesh set their minds on the things of the flesh, but those who live according to the Spirit set their minds on the things of the Spirit. <b>6</b> For to set the mind on the flesh is death, but to set the mind on the Spirit is life and peace. <b>7</b> For the mind that is set on the flesh is hostile to God, for it does not submit to God's law; indeed, it cannot. <b>8</b> Those who are in the flesh cannot please God.",
+                    AMP: "<b>5</b> For those who are living according to the flesh set their minds on the things of the flesh [which gratify the body], but those who are living according to the Spirit, [set their minds on] the things of the Spirit [His will and purpose]. <b>6</b> Now the mind of the flesh is death [both now and forever—because it pursues sin]; but the mind of the Spirit is life and peace [the spiritual well-being that comes from walking with God—now and forever]; <b>7</b> the mind of the flesh [with its sinful pursuits] is actively hostile to God. It does not submit itself to God’s law, since it cannot, <b>8</b> and those who are in the flesh [living a life that caters to sinful appetites and impulses] cannot please God.",
+                    NLT: "<b>5</b> Those who are dominated by the sinful nature think about sinful things, but those who are controlled by the Holy Spirit think about things that please the Spirit. <b>6</b> So letting your sinful nature control your mind leads to death. But letting the Spirit control your mind leads to life and peace. <b>7</b> For the sinful nature is always hostile to God. It never did obey God’s laws, and it never will. <b>8</b> That’s why those who are still under the control of their sinful nature can never please God.",
+                },
+                "Galatians 5:16-17": {
+                    KJV: "<b>16</b> This I say then, Walk in the Spirit, and ye shall not fulfil the lust of the flesh. <b>17</b> For the flesh lusteth against the Spirit, and the Spirit against the flesh: and these are contrary the one to the other: so that ye cannot do the things that ye would.",
+                    NKJV: "<b>16</b> I say then: Walk in the Spirit, and you shall not fulfill the lust of the flesh. <b>17</b> For the flesh lusts against the Spirit, and the Spirit against the flesh; and these are contrary to one another, so that you do not do the things that you wish.",
+                    NIV: "<b>16</b> So I say, walk by the Spirit, and you will not gratify the desires of the flesh. <b>17</b> For the flesh desires what is contrary to the Spirit, and the Spirit what is contrary to the flesh. They are in conflict with each other, so that you are not to do whatever you want.",
+                    ESV: "<b>16</b> But I say, walk by the Spirit, and you will not gratify the desires of the flesh. <b>17</b> For the desires of the flesh are against the Spirit, and the desires of the Spirit are against the flesh, for these are opposed to each other, to keep you from doing the things you want to do.",
+                    AMP: "<b>16</b> But I say, walk habitually in the [Holy] Spirit [seek Him and be responsive to His guidance], and then you will certainly not carry out the desire of the sinful nature [which responds impulsively without regard for God and His precepts]. <b>17</b> For the sinful nature has its desire which is opposed to the Spirit, and the [desire of the] Spirit opposes the sinful nature; for these [two, the sinful nature and the Spirit] are in direct opposition to each other [continually in conflict], so that you [as believers] do not always do whatever [good things] you want to do.",
+                    NLT: "<b>16</b> So I say, let the Holy Spirit guide your lives. Then you won’t be doing what your sinful nature craves. <b>17</b> The sinful nature wants to do evil, which is just the opposite of what the Spirit wants. And the Spirit gives us desires that are the opposite of what the sinful nature desires. These two forces are constantly fighting each other, so you are not free to carry out your good intentions.",
+                },
+                "Numbers 11:34": {
+                    KJV: "<b>34</b> And he called the name of that place Kibrothhattaavah: because there they buried the people that lusted.",
+                    NKJV: "<b>34</b> So he called the name of that place Kibroth Hattaavah, because there they buried the people who had yielded to craving.",
+                    NIV: "<b>34</b> Therefore the place was named Kibroth Hattaavah, because there they buried the people who had craved other food.",
+                    ESV: "<b>34</b> Therefore the name of that place was called Kibroth-hattaavah, because there they buried the people who had the craving.",
+                    AMP: "<b>34</b> So they named that place Kibroth-hattaavah [the graves of greediness], because there they buried the people who had been greedy for more.",
+                    NLT: "<b>34</b> So that place was called Kibroth-hattaavah (which means “graves of gluttony”) because there they buried the people who had craved meat from Egypt.",
+                },
+                "Numbers 11:4": {
+                    KJV: "<b>4</b> And the mixt multitude that was among them fell a lusting: and the children of Israel also wept again, and said, Who shall give us flesh to eat?",
+                    NKJV: "<b>4</b> Now the mixed multitude who were among them yielded to intense craving; so the children of Israel also wept again and said: 'Who will give us meat to eat?'",
+                    NIV: "<b>4</b> The rabble with them began to crave other food, and again the Israelites started wailing and said, 'If only we had meat to eat!'",
+                    ESV: "<b>4</b> Now the rabble that was among them had a strong craving. And the people of Israel also wept again and said, 'Oh that we had meat to eat!'",
+                    AMP: "<b>4</b> The mixed multitude [of non-Israelites] who were among them had greedy desires; and the Israelites wept again and said, 'Who will give us meat to eat?'",
+                    NLT: "<b>4</b> Then the foreign rabble who were traveling with the Israelites began to crave the good things of Egypt. And the people of Israel also began to complain. 'Oh, for some meat!' they exclaimed.",
+                },
+
+                "Hebrews 13:5": {
+                    KJV: "<b>5</b> Let your conversation be without covetousness; and be content with such things as ye have: for he hath said, I will never leave thee, nor forsake thee.",
+                    NKJV: "<b>5</b> Let your conduct be without covetousness; be content with such things as you have. For He Himself has said, 'I will never leave you nor forsake you.'",
+                    NIV: "<b>5</b> Keep your lives free from the love of money and be content with what you have, because God has said, 'Never will I leave you; never will I forsake you.'",
+                    ESV: "<b>5</b> Keep your life free from love of money, and be content with what you have, for he has said, 'I will never leave you nor forsake you.'",
+                    AMP: "<b>5</b> Let your character [your moral essence, your inner nature] be free from the love of money [shun greed—be financially ethical], being content with what you have; for He has said, 'I will never [under any circumstances] desert you [nor give you up nor leave you without support, nor will I in any degree leave you helpless] nor will I forsake or let you down or relax My hold on you [assuredly not]!'",
+                    NLT: "<b>5</b> Don’t love money; be satisfied with what you have. For God has said, 'I will never fail you. I will never abandon you.'",
+                },
+                "2 Corinthians 6:14": {
+                    KJV: "<b>14</b> Be ye not unequally yoked together with unbelievers: for what fellowship hath righteousness with unrighteousness? and what communion hath light with darkness?",
+                    NKJV: "<b>14</b> Do not be unequally yoked together with unbelievers. For what fellowship has righteousness with lawlessness? And what communion has light with darkness?",
+                    NIV: "<b>14</b> Do not be yoked together with unbelievers. For what do righteousness and wickedness have in common? Or what fellowship can light have with darkness?",
+                    ESV: "<b>14</b> Do not be unequally yoked with unbelievers. For what partnership has righteousness with lawlessness? Or what fellowship has light with darkness?",
+                    AMP: "<b>14</b> Do not be unequally bound together with unbelievers [do not make mismatched alliances with them, inconsistent with your faith]. For what partnership can righteousness have with lawlessness? Or what fellowship can light have with darkness?",
+                    NLT: "<b>14</b> Don’t team up with those who are unbelievers. How can righteousness be a partner with wickedness? How can light live with darkness?",
+                },
+                "Numbers 33:55-56": {
+                    KJV: "<b>55</b> But if ye will not drive out the inhabitants of the land from before you; then it shall come to pass, that those which ye let remain of them shall be pricks in your eyes, and thorns in your sides, and shall vex you in the land wherein ye dwell. <b>56</b> Moreover it shall come to pass, that I shall do unto you, as I thought to do unto them.",
+                    NKJV: "<b>55</b> But if you do not drive out the inhabitants of the land from before you, then it shall be that those whom you let remain shall be irritants in your eyes and thorns in your sides, and they shall harass you in the land where you dwell. <b>56</b> Moreover it shall be that I will do to you as I thought to do to them.",
+                    NIV: "<b>55</b> But if you do not drive out the inhabitants of the land, those you allow to remain will become barbs in your eyes and thorns in your sides. They will give you trouble in the land where you will live. <b>56</b> And then I will do to you what I plan to do to them.",
+                    ESV: "<b>55</b> But if you do not drive out the inhabitants of the land from before you, then those of them whom you let remain shall be as barbs in your eyes and thorns in your sides, and they shall trouble you in the land where you dwell. <b>56</b> And I will do to you as I thought to do to them.",
+                    AMP: "<b>55</b> But if you do not drive out the inhabitants of the land from before you, then those you let remain [of them] will be like thorns in your eyes and thorns in your sides, and they will trouble you in the land in which you live. <b>56</b> And as I planned to do to them, so I will do to you.",
+                    NLT: "<b>55</b> But if you fail to drive out the people who live in the land, those who remain will be like splinters in your eyes and thorns in your sides. They will harass you in the land where you live. <b>56</b> And I will do to you what I had planned to do to them.",
+                },
+                "Isaiah 32:10": {
+                    KJV: "<b>10</b> Many days and years shall ye be troubled, ye careless women: for the vintage shall fail, the gathering shall not come.",
+                    NKJV: "<b>10</b> In a year and some days you will be troubled, you complacent women; For the vintage will fail, the gathering will not come.",
+                    NIV: "<b>10</b> In little more than a year you who feel secure will tremble; the grape harvest will fail, and the harvest of fruit will not come.",
+                    ESV: "<b>10</b> In little more than a year you will shudder, you complacent women; for the grape harvest fails, the fruit harvest will not come.",
+                    AMP: "<b>10</b> In little more than a year you will tremble, you complacent women; for the vintage has ended, and the harvest will not come.",
+                    NLT: "<b>10</b> In a little more than a year, you careless ones will suddenly begin to care. For your fruit crops will fail, and the harvest will never take place.",
+                },
+                "2 Corinthians 2:11": {
+                    KJV: "<b>11</b> Lest Satan should get an advantage of us: for we are not ignorant of his devices.",
+                    NKJV: "<b>11</b> lest Satan should take advantage of us; for we are not ignorant of his devices.",
+                    NIV: "<b>11</b> in order that Satan might not outwit us. For we are not unaware of his schemes.",
+                    ESV: "<b>11</b> so that we would not be outwitted by Satan; for we are not ignorant of his designs.",
+                    AMP: "<b>11</b> to keep Satan from taking advantage of us; for we are not ignorant of his schemes.",
+                    NLT: "<b>11</b> so that Satan will not outsmart us. For we are familiar with his evil schemes.",
+                },
+                Revition: {
+                    KJV: "It is our year of Super Harvest <br> It is pur month of Unspeakeble Joy <br> It is our week of Divine Encounter <br> It is our day of Divine Visitation <br> It is our hour of Supernatural Turnaround",
+                    NKJV: "<b>15</b> 'I know your works, that you are neither cold nor hot. I could wish you were cold or hot. <b>16</b> So then, because you are lukewarm, and neither cold nor hot, I will vomit you out of My mouth.",
+                    NIV: "<b>15</b> I know your deeds, that you are neither cold nor hot. I wish you were either one or the other! <b>16</b> So, because you are lukewarm—neither hot nor cold—I am about to spit you out of my mouth.",
+                    ESV: "<b>15</b> 'I know your works: you are neither cold nor hot. Would that you were either cold or hot! <b>16</b> So, because you are lukewarm, and neither hot nor cold, I will spit you out of my mouth.",
+                    AMP: "<b>15</b> 'I know your deeds, that you are neither cold nor hot; I wish that you were cold or hot. <b>16</b> So because you are lukewarm—spiritually useless—and neither hot nor cold—I will vomit you out of My mouth.'",
+                    NLT: "<b>15</b> 'I know all the things you do, that you are neither hot nor cold. I wish that you were one or the other! <b>16</b> But since you are like lukewarm water, neither hot nor cold, I will spit you out of my mouth!'",
+                },
+            };
+
+            // Replace the existing showVersion function
+
+            function showVersion(version) {
+                const reference =
+                    document.getElementById("verse-reference").textContent;
+                const verseText = document.getElementById("verse-text");
+
+                // Show loader
+                verseText.innerHTML =
+                    '<div class="verse-loader"><i class="fas fa-spinner fa-2x"></i></div>';
+
+                // Simulate loading time and show verse
+                setTimeout(() => {
+                    if (bibleVerses[reference]) {
+                        verseText.innerHTML = `<p class="verse-text">${bibleVerses[reference][version]}</p>`;
+                        // Add show class after a brief delay to trigger fade-in
+                        setTimeout(() => {
+                            document
+                                .querySelector(".verse-text")
+                                .classList.add("show");
+                        }, 100);
+                    } else {
+                        verseText.innerHTML =
+                            "<p>Verse not found in database.</p>";
+                    }
+
+                    // Update active button
+                    document.querySelectorAll(".version-btn").forEach((btn) => {
+                        btn.classList.remove("active");
+                        if (btn.textContent === version)
+                            btn.classList.add("active");
+                    });
+                }, 500); // Half second loading time
+            }
+
+            // Close modal when clicking the X or outside
+            document.querySelector(".close").onclick = function () {
+                document.getElementById("verse-modal").style.display = "none";
+                document.body.classList.remove("modal-open");
+            };
+
+            window.onclick = function (event) {
+                const modal = document.getElementById("verse-modal");
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                    document.body.classList.remove("modal-open");
+                }
+            };
+
+            function checkQuiz() {
+                const answers = {
+                    q1: "a", // Malachi 3:10
+                    q2: "b", // Time of Melchizedek and Abraham
+                    q3: "a", // No, it predates the Law of Moses
+                    q4: "c", // Christ
+                    q5: "a", // Hebrews 7:6-8
+                    q6: "a", // To support Melchizedek's priesthood
+                };
+
+                let score = 0;
+                let total = Object.keys(answers).length;
+                let resultsHTML = "<h3>📊 Quiz Results</h3><ul>";
+
+                for (let key in answers) {
+                    const selected = document.querySelector(
+                        `input[name="${key}"]:checked`
+                    );
+                    if (selected) {
+                        if (selected.value === answers[key]) {
+                            score++;
+                            resultsHTML += `<li>Question ${key.slice(
+                                1
+                            )}: ✅ Correct</li>`;
+                        } else {
+                            resultsHTML += `<li>Question ${key.slice(
+                                1
+                            )}: ❌ Incorrect</li>`;
+                        }
+                    } else {
+                        resultsHTML += `<li>Question ${key.slice(
+                            1
+                        )}: ⚠️ Not answered</li>`;
+                    }
+                }
+
+                resultsHTML += `</ul>`;
+
+                // Calculate percentage and add appropriate styling
+                const percentage = Math.round((score / total) * 100);
+                let scoreClass = "";
+                let message = "";
+
+                if (percentage >= 80) {
+                    scoreClass = "score-excellent";
+                    message =
+                        "🎉 Excellent work! You have a strong understanding of biblical tithing.";
+                } else if (percentage >= 60) {
+                    scoreClass = "score-good";
+                    message =
+                        "👍 Good job! You have a solid foundation, but consider reviewing some concepts.";
+                } else {
+                    scoreClass = "score-needs-improvement";
+                    message =
+                        "📚 Keep studying! Review the lesson materials to strengthen your understanding.";
+                }
+
+                resultsHTML += `<div class="score-summary ${scoreClass}">
+                            <strong>Your Score: ${score} out of ${total} (${percentage}%)</strong>
+                            <br><br>${message}
+                        </div>`;
+
+                const resultsDiv = document.getElementById("quiz-results");
+                resultsDiv.innerHTML = resultsHTML;
+                resultsDiv.classList.add("show");
+                resultsDiv.scrollIntoView({ behavior: "smooth" });
+            }
+
+            let progress = 0;
+            const totalSections = 5; // Number of tabs
+
+            function updateProgress(increment = true) {
+                if (increment) {
+                    progress = Math.min(100, progress + 100 / totalSections);
+                }
+                const progressBar = document.querySelector(".progress");
+                const progressText = document.querySelector(".progress-text");
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}% Complete`;
+
+                if (progress >= 100) {
+                    showToast(
+                        "Congratulations! You've completed the lesson! 🎉"
+                    );
+                }
+            }
+
+            function showToast(message) {
+                const toast = document.createElement("div");
+                toast.className = "toast";
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                // Trigger reflow
+                toast.offsetHeight;
+
+                // Show toast
+                toast.style.opacity = "1";
+
+                // Hide after 3 seconds
+                setTimeout(() => {
+                    toast.style.opacity = "0";
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            // Add interaction tracking to tab switching
+            const originalOpenTab = openTab;
+            openTab = function (tabName) {
+                originalOpenTab(tabName);
+                updateProgress();
+
+                // Add animation to questions
+                if (tabName === "quiz") {
+                    document.querySelectorAll(".question").forEach((q, i) => {
+                        setTimeout(() => q.classList.add("show"), i * 200);
+                    });
+                }
+            };
+
+            // Save progress to localStorage
+            function saveProgress() {
+                localStorage.setItem("lessonProgress", progress);
+                showToast("Progress saved! 💾");
+            }
+
+            // Load saved progress
+            window.addEventListener("load", () => {
+                const savedProgress = localStorage.getItem("lessonProgress");
+                if (savedProgress) {
+                    progress = parseFloat(savedProgress);
+                    updateProgress(false);
+                }
+            });
+
+            // Share functionality
+            function shareLesson() {
+                if (navigator.share) {
+                    navigator
+                        .share({
+                            title: "Sunday School Lesson",
+                            text: "Check out this lesson on Real Christian Clothing!",
+                            url: window.location.href,
+                        })
+                        .then(() => showToast("Shared successfully! 🙌"))
+                        .catch(() => showToast("Sharing failed"));
+                } else {
+                    showToast("Sharing not supported on this device");
+                }
+            }
+
+            // Scroll to top
+            function scrollToTop() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                });
+            }
+
+            // Add to your existing JavaScript
+
+            let preferredVersion =
+                localStorage.getItem("preferredVersion") || "KJV";
+
+            function changeDefaultVersion(version) {
+                preferredVersion = version;
+                localStorage.setItem("preferredVersion", version);
+                showVersion(version);
+                showToast(`Default Bible version changed to ${version}`);
+            }
+
+            // Update the showBibleVersions function
+
+            // Load preferred version on startup
+            window.addEventListener("load", () => {
+                const savedVersion = localStorage.getItem("preferredVersion");
+                if (savedVersion) {
+                    preferredVersion = savedVersion;
+                    document.querySelectorAll(".version-btn").forEach((btn) => {
+                        btn.classList.remove("active");
+                        if (btn.textContent === preferredVersion)
+                            btn.classList.add("active");
+                    });
+                }
+            });
+
+            // Add this to your existing <script> section
+            let currentFontSize =
+                parseInt(localStorage.getItem("preferredFontSize")) || 16;
+
+            function adjustFontSize(delta) {
+                // Adjust font size with limits
+                currentFontSize = Math.min(
+                    Math.max(currentFontSize + delta, 12),
+                    24
+                );
+
+                // Update CSS variable
+                document.documentElement.style.setProperty(
+                    "--font-size",
+                    `${currentFontSize}px`
+                );
+
+                // Update display
+                document.querySelector(
+                    ".font-size"
+                ).textContent = `${currentFontSize}px`;
+
+                // Save to localStorage
+                localStorage.setItem("preferredFontSize", currentFontSize);
+            }
+
+            // Initialize font size on page load
+            window.addEventListener("load", () => {
+                // Set initial font size
+                document.documentElement.style.setProperty(
+                    "--font-size",
+                    `${currentFontSize}px`
+                );
+                document.querySelector(
+                    ".font-size"
+                ).textContent = `${currentFontSize}px`;
+
+                // Add scalable-text class to all text elements
+                document
+                    .querySelectorAll(
+                        "p, h1, h2, h3, h4, h5, h6, li, blockquote, label, button, input, textarea, .tab-btn, .verse-text, .options label"
+                    )
+                    .forEach((el) => el.classList.add("scalable-text"));
+            });
+
+            function changeFont(fontFamily) {
+                document.body.style.fontFamily = fontFamily;
+                // Save preference
+                localStorage.setItem("preferredFont", fontFamily);
+            }
+
+            // Load saved preferences
+            window.addEventListener("load", () => {
+                const savedFontSize = localStorage.getItem("preferredFontSize");
+                if (savedFontSize) {
+                    currentFontSize = parseInt(savedFontSize);
+                    adjustFontSize(0);
+                }
+
+                const savedFont = localStorage.getItem("preferredFont");
+                if (savedFont) {
+                    document.body.style.fontFamily = savedFont;
+                    document.querySelector(".font-family-select").value =
+                        savedFont;
+                }
+            });
+
+            // Add CSS Variable for scaling
+            document.documentElement.style.setProperty(
+                "--content-scale",
+                "100%"
+            );
+
+            // Update content elements to use the scale
+            document
+                .querySelectorAll(
+                    ".tab-content, .memory-verse, .reflection-notes"
+                )
+                .forEach((el) => {
+                    el.classList.add("adjustable-content");
+                    el.style.fontSize =
+                        "calc(1rem * var(--content-scale) / 100)";
+                });
+
+            // Add to your existing <script> section
+            document.addEventListener("DOMContentLoaded", () => {
+                // Love Meter functionality
+                const loveSlider = document.querySelector(".love-slider");
+                const ratingValue = document.querySelector(".rating-value");
+                const ratingFeedback =
+                    document.querySelector(".rating-feedback");
+
+                if (loveSlider) {
+                    loveSlider.addEventListener("input", () => {
+                        const value = loveSlider.value;
+                        ratingValue.textContent = `${value}/10`;
+
+                        // Update feedback based on rating
+                        const feedback =
+                            value >= 8
+                                ? "Excellent! Keep showing God's love!"
+                                : value >= 6
+                                ? "Good effort! There's room to grow."
+                                : "Consider ways to show more love tomorrow.";
+                        ratingFeedback.textContent = feedback;
+                    });
+                }
+
+                // Action Items functionality
+                const addActionBtn = document.querySelector(".add-action-btn");
+                if (addActionBtn) {
+                    addActionBtn.addEventListener("click", () => {
+                        const action = prompt("Enter your custom love action:");
+                        if (action) {
+                            const actionItems =
+                                document.querySelector(".action-items");
+                            const newAction = document.createElement("div");
+                            newAction.className = "action-item";
+                            newAction.innerHTML = `
+                                                                                <input type="checkbox" id="action${Date.now()}">
+                                                                                <label for="action${Date.now()}">${action}</label>
+                                                                            `;
+                            actionItems.insertBefore(newAction, addActionBtn);
+                        }
+                    });
+                }
+
+                // Journal Prompts functionality
+                const prompts = [
+                    "How did you demonstrate God's love today?",
+                    "What challenges did you face in showing love?",
+                    "How can you better express God's love tomorrow?",
+                ];
+                let currentPrompt = 0;
+
+                const updatePrompt = () => {
+                    const promptElement = document.querySelector(".prompt p");
+                    const promptCounter =
+                        document.querySelector(".prompt-counter");
+                    if (promptElement) {
+                        promptElement.textContent = prompts[currentPrompt];
+                        promptCounter.textContent = `${currentPrompt + 1}/${
+                            prompts.length
+                        }`;
+                    }
+                };
+
+                const nextPromptBtn = document.querySelector(".next-prompt");
+                const prevPromptBtn = document.querySelector(".prev-prompt");
+
+                if (nextPromptBtn && prevPromptBtn) {
+                    nextPromptBtn.addEventListener("click", () => {
+                        if (currentPrompt < prompts.length - 1) {
+                            currentPrompt++;
+                            updatePrompt();
+                            prevPromptBtn.disabled = false;
+                            if (currentPrompt === prompts.length - 1) {
+                                nextPromptBtn.disabled = true;
+                            }
+                        }
+                    });
+
+                    prevPromptBtn.addEventListener("click", () => {
+                        if (currentPrompt > 0) {
+                            currentPrompt--;
+                            updatePrompt();
+                            nextPromptBtn.disabled = false;
+                            if (currentPrompt === 0) {
+                                prevPromptBtn.disabled = true;
+                            }
+                        }
+                    });
+                }
+
+                // Commitment functionality
+                const saveCommitmentBtn =
+                    document.querySelector(".save-commitment");
+                const commitmentInput =
+                    document.querySelector(".commitment-input");
+                const commitmentList =
+                    document.querySelector(".commitment-list");
+
+                if (saveCommitmentBtn && commitmentInput && commitmentList) {
+                    // Load saved commitments
+                    const savedCommitments = JSON.parse(
+                        localStorage.getItem("commitments") || "[]"
+                    );
+                    savedCommitments.forEach((commitment) => {
+                        const li = document.createElement("li");
+                        li.textContent = commitment;
+                        commitmentList.appendChild(li);
+                    });
+
+                    saveCommitmentBtn.addEventListener("click", () => {
+                        const commitment = commitmentInput.value.trim();
+                        if (commitment) {
+                            const li = document.createElement("li");
+                            li.textContent = commitment;
+                            commitmentList.appendChild(li);
+
+                            // Save to localStorage
+                            const commitments = JSON.parse(
+                                localStorage.getItem("commitments") || "[]"
+                            );
+                            commitments.push(commitment);
+                            localStorage.setItem(
+                                "commitments",
+                                JSON.stringify(commitments)
+                            );
+
+                            commitmentInput.value = "";
+                            showToast("Commitment saved! 🙏");
+                        }
+                    });
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const trigger = document.getElementById("fruitTrigger");
+                const audio = document.getElementById("fruitSound");
+
+                let hasPlayed = sessionStorage.getItem("fruitSoundPlayed");
+
+                trigger.addEventListener("click", function () {
+                    // Animate
+                    trigger.classList.add("bounce");
+                    setTimeout(() => trigger.classList.remove("bounce"), 300);
+
+                    // Play sound only once per session
+                    if (!hasPlayed && audio) {
+                        audio.currentTime = 0;
+                        audio.play();
+                        sessionStorage.setItem("fruitSoundPlayed", "true");
+                        hasPlayed = true;
+                    }
+                });
+            });
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
